@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MAXMAN - Premium Performance Enhancement | ماكسمان - القوة والأداء الفائق">
+<meta name="keywords" content="maxman, performance, premium, enhancement, ماكسمان, قوة, أداء, طاقة">
+<meta name="theme-color" content="#020208">
+<title>MAXMAN | Premium Performance</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--blue:#0055FF;--blue-l:#3380FF;--blue-s:#80B3FF;--blue-d:#0040CC;--blue-glow:rgba(0,85,255,.15);
+--neon:#00E5FF;--neon-l:#40EFFF;--neon-glow:rgba(0,229,255,.1);
+--titanium:#B0BEC5;--titanium-l:#CFD8DC;
+--void:#020208;--void-2:#06060F;--void-3:#0A0A18;--void-4:#0E0E22;
+--white:#F5F7FA;--white-d:#D8DEE4;
+--steel:#546E7A;--steel-l:#78909C;
+--glass:rgba(255,255,255,.02);--glass-b:rgba(255,255,255,.04);
+--grad:linear-gradient(135deg,var(--blue),var(--neon));
+--grad-d:linear-gradient(135deg,var(--blue-d),var(--blue));
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Inter','Tajawal',sans-serif;background:var(--void);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:var(--grad);border-radius:10px}
+::selection{background:var(--blue);color:#fff}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--void);z-index:100000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1s ease,visibility 1s}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.ld-mark{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);letter-spacing:12px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:ldF .6s ease forwards .3s;line-height:1}
+.ld-line{width:120px;height:1px;background:var(--glass-b);margin-top:24px;overflow:hidden;opacity:0;animation:ldF .5s ease forwards .5s}
+.ld-line span{display:block;height:100%;width:0;background:var(--grad);animation:ldFill 2s ease forwards .7s}
+.ld-sub{font-size:.5rem;letter-spacing:8px;text-transform:uppercase;color:var(--steel);margin-top:14px;opacity:0;animation:ldF .5s ease forwards .6s}
+@keyframes ldF{to{opacity:1}}
+@keyframes ldFill{to{width:100%}}
+
+/* CURSOR */
+.cr{position:fixed;width:32px;height:32px;border:1px solid rgba(0,85,255,.4);border-radius:50%;pointer-events:none;z-index:99999;transition:transform .15s,border-color .2s;mix-blend-mode:difference}
+.cd{position:fixed;width:4px;height:4px;background:var(--neon);border-radius:50%;pointer-events:none;z-index:99999;box-shadow:0 0 8px var(--neon-glow)}
+@media(max-width:1024px){.cr,.cd{display:none}}
+
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:9999;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav.on{background:rgba(2,2,8,.96);backdrop-filter:blur(28px);border-bottom:1px solid rgba(0,85,255,.04);padding:12px 40px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:6px;text-decoration:none;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo:hover{opacity:.8}
+.nm{display:flex;align-items:center;gap:24px}
+.nm a{color:var(--steel-l);text-decoration:none;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;transition:color .3s;position:relative}
+.nm a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--blue);transition:width .3s}
+.nm a:hover{color:var(--blue-l)}
+.nm a:hover::after{width:100%}
+.nm-cta{background:var(--grad-d)!important;color:#fff!important;padding:8px 20px!important;border-radius:4px!important;font-weight:700!important;letter-spacing:1px!important;transition:all .3s!important;font-size:.6rem!important}
+.nm-cta::after{display:none!important}
+.nm-cta:hover{box-shadow:0 4px 24px var(--blue-glow)!important}
+.hb{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:4px}
+.hb span{display:block;width:18px;height:1px;background:var(--blue-l);transition:all .3s}
+.mn{display:none;position:fixed;inset:0;background:rgba(2,2,8,.99);z-index:9998;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.mn.open{display:flex}
+.mn a{font-family:'Bebas Neue',sans-serif;color:var(--white);text-decoration:none;font-size:2rem;letter-spacing:8px;transition:color .3s}
+.mn a:hover{color:var(--blue)}
+.mx{position:absolute;top:18px;right:24px;background:none;border:none;color:var(--blue);font-size:1.6rem;cursor:pointer}
+@media(max-width:960px){.nm{display:none}.hb{display:flex}nav{padding:12px 16px}}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;z-index:2;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:55%;height:100%;background:linear-gradient(135deg,rgba(0,85,255,.03) 0%,transparent 60%);pointer-events:none}
+.hero-wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center;width:100%;max-width:1440px;margin:0 auto;padding:120px 56px 80px;gap:40px;position:relative;z-index:2}
+.hero-txt{z-index:2}
+.h-over{font-family:'Bebas Neue',sans-serif;font-size:clamp(.7rem,1.2vw,.9rem);letter-spacing:8px;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.h-over::before{content:'';width:24px;height:1px;background:var(--blue)}
+.h-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,10vw,9rem);line-height:.9;letter-spacing:4px;margin-bottom:20px}
+.h-big .gr{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-p{font-size:.88rem;color:var(--steel-l);line-height:2;margin-bottom:36px;max-width:440px;font-weight:300}
+.h-btns{display:flex;gap:10px;flex-wrap:wrap}
+.b1{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--grad-d);color:#fff;font-weight:700;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;border:none;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .35s;position:relative;overflow:hidden}
+.b1::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:left .5s}
+.b1:hover::before{left:100%}
+.b1:hover{box-shadow:0 10px 40px var(--blue-glow);transform:translateY(-1px)}
+.b2{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:transparent;color:var(--white);font-weight:500;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(255,255,255,.06);border-radius:4px;cursor:pointer;text-decoration:none;transition:all .35s}
+.b2:hover{border-color:var(--blue);color:var(--blue)}
+.hero-vis{z-index:2;display:flex;align-items:center;justify-content:center;position:relative}
+.h-frame{position:relative;width:100%;max-width:480px}
+.h-frame img{width:100%;border-radius:16px;position:relative;z-index:3;animation:float 7s ease-in-out infinite}
+.h-aura{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140%;height:140%;background:radial-gradient(circle,rgba(0,85,255,.06) 0%,rgba(0,229,255,.03) 35%,transparent 70%);z-index:1;filter:blur(40px);animation:auraPulse 6s ease-in-out infinite}
+.h-orbit{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border:1px solid rgba(0,85,255,.03);border-radius:50%;z-index:2}
+.h-orbit:nth-child(3){width:118%;height:118%;animation:spin 40s linear infinite}
+.h-orbit:nth-child(4){width:140%;height:140%;animation:spin 55s linear infinite reverse}
+.h-orbit::after{content:'';position:absolute;top:0;left:50%;width:3px;height:3px;background:var(--blue);border-radius:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--blue)}
+@keyframes float{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}70%{transform:translateY(-7px)}}
+@keyframes auraPulse{0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1)}50%{opacity:.8;transform:translate(-50%,-50%) scale(1.05)}}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.scroll-q{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:3}
+.scroll-q span{font-family:'Bebas Neue',sans-serif;font-size:.55rem;letter-spacing:6px;color:var(--steel)}
+.scroll-q div{width:1px;height:24px;background:linear-gradient(to bottom,var(--blue),transparent);animation:sB 2s ease-in-out infinite}
+@keyframes sB{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.15;transform:scaleY(.3)}}
+@media(max-width:960px){
+.hero-wrap{grid-template-columns:1fr;padding:110px 18px 50px;text-align:center}
+.hero-txt{order:2}.hero-vis{order:1}
+.h-p{margin:0 auto 36px}.h-btns{justify-content:center}.h-over{justify-content:center}
+.h-frame{max-width:260px}
+}
+
+/* SECTION */
+.sec{position:relative;z-index:2;padding:110px 18px}
+.sec-in{max-width:1140px;margin:0 auto}
+.tag{font-family:'Bebas Neue',sans-serif;font-size:.6rem;letter-spacing:6px;color:var(--blue);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.tag::before{content:'';width:16px;height:1px;background:var(--blue)}
+.tag.c{justify-content:center}
+.sh{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3.6vw,3rem);letter-spacing:3px;margin-bottom:10px;color:var(--white);line-height:1.1}
+.sh .gr{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sp{font-size:.85rem;color:var(--steel-l);line-height:2;max-width:520px;font-weight:300}
+.sr{width:32px;height:2px;background:var(--grad);margin:14px 0;border-radius:1px}
+
+/* CARD */
+.cd2{background:var(--glass);border:1px solid var(--glass-b);border-radius:8px;padding:32px;transition:all .5s;position:relative;overflow:hidden}
+.cd2::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.cd2:hover::before{transform:scaleX(1)}
+.cd2:hover{border-color:rgba(0,85,255,.08);transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+
+/* ARABIC */
+.ar-s{direction:rtl;text-align:right;background:linear-gradient(180deg,var(--void) 0%,var(--void-2) 50%,var(--void) 100%)}
+.ar-h{font-family:'Tajawal',sans-serif;font-size:clamp(2rem,4.2vw,3.2rem);font-weight:900;margin-bottom:12px;background:linear-gradient(135deg,var(--white),var(--blue-s));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ar-p{font-family:'Tajawal',sans-serif;font-size:.98rem;line-height:2.2;color:var(--steel-l)}
+.ac{background:var(--glass);border:1px solid var(--glass-b);border-radius:8px;padding:30px;transition:all .5s;direction:rtl;text-align:right;overflow:hidden;position:relative}
+.ac::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--grad);transform:scaleX(0);transform-origin:right;transition:transform .5s}
+.ac:hover::before{transform:scaleX(1)}
+.ac:hover{border-color:rgba(0,85,255,.08);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.ac-i{width:48px;height:48px;background:var(--grad-d);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:14px;transition:all .4s}
+.ac:hover .ac-i{transform:scale(1.08)}
+.ac h3{font-family:'Tajawal',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:7px;color:var(--white)}
+.ac p{font-family:'Tajawal',sans-serif;color:var(--steel-l);line-height:1.8;font-size:.82rem}
+
+.fi2{width:52px;height:52px;background:linear-gradient(135deg,rgba(0,85,255,.06),rgba(0,85,255,.01));border:1px solid rgba(0,85,255,.05);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:14px;transition:all .4s}
+.cd2:hover .fi2{background:var(--grad-d);border-color:transparent;transform:scale(1.08)}
+
+.sc-s{background:var(--void-2);overflow:hidden;position:relative}
+.sc-s::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(0,85,255,.025),transparent 60%);pointer-events:none}
+.sc-w{position:relative;max-width:520px;margin:48px auto 0}
+.sc-i{width:100%;border-radius:16px;filter:drop-shadow(0 30px 70px var(--blue-glow));animation:scF 9s ease-in-out infinite;transition:transform .4s}
+@keyframes scF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.008)}}
+
+.nc{text-align:center;padding:38px 14px}
+.nv{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:2px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.nl{font-size:.55rem;letter-spacing:4px;text-transform:uppercase;color:var(--steel);font-family:'Bebas Neue',sans-serif}
+
+.wr{display:flex;align-items:flex-start;gap:14px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.wr:last-child{border-bottom:none}
+.wi{width:36px;height:36px;min-width:36px;background:rgba(0,85,255,.06);border:1px solid rgba(0,85,255,.04);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--blue)}
+.wt h4{font-size:.84rem;font-weight:600;margin-bottom:2px;color:var(--white)}
+.wt p{font-size:.76rem;color:var(--steel-l);line-height:1.6}
+
+/* ORDER */
+.or-s{background:linear-gradient(180deg,var(--void) 0%,var(--void-2) 50%,var(--void) 100%);position:relative;z-index:5}
+.or-w{max-width:640px;margin:0 auto}
+.fg{margin-bottom:20px}
+.fl{display:flex;justify-content:space-between;margin-bottom:5px;font-size:.75rem;color:var(--steel-l)}
+.fl .ar{font-family:'Tajawal',sans-serif}
+.fi3{width:100%;padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);border-radius:6px;color:var(--white);font-size:.85rem;font-family:'Inter','Tajawal',sans-serif;transition:all .3s;outline:none;position:relative;z-index:10}
+.fi3:focus{border-color:var(--blue);box-shadow:0 0 20px rgba(0,85,255,.05)}
+.fi3::placeholder{color:rgba(255,255,255,.1)}
+textarea.fi3{min-height:100px;resize:vertical}
+.qr{display:flex;align-items:center}
+.qb2{width:46px;height:46px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);color:var(--blue);font-size:1.1rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;position:relative;z-index:10}
+.qb2:first-child{border-radius:6px 0 0 6px}.qb2:last-child{border-radius:0 6px 6px 0}
+.qb2:hover{background:rgba(0,85,255,.05)}
+.qi2{width:64px;height:46px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);border-left:none;border-right:none;color:var(--white);font-size:.95rem;text-align:center;font-family:'Inter',sans-serif;outline:none;position:relative;z-index:10}
+.ob2{width:100%;padding:15px;background:var(--grad-d);color:#fff;font-size:.78rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;border:none;border-radius:4px;cursor:pointer;transition:all .4s;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Bebas Neue','Tajawal',sans-serif;margin-top:6px;position:relative;overflow:hidden;z-index:10;font-size:.85rem;letter-spacing:4px}
+.ob2::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:left .5s}
+.ob2:hover::before{left:100%}
+.ob2:hover{box-shadow:0 10px 40px var(--blue-glow)}
+
+.tc2{background:var(--glass);border:1px solid var(--glass-b);border-radius:8px;padding:32px;transition:all .5s;position:relative}
+.tc2::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.tc2:hover::before{transform:scaleX(1)}
+.tc2:hover{border-color:rgba(0,85,255,.08);transform:translateY(-4px)}
+.tc2-s{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:.82rem;margin-bottom:10px;letter-spacing:3px}
+.tc2-b{font-size:.85rem;line-height:1.9;color:var(--steel-l);margin-bottom:16px;font-style:italic}
+.tc2-w{display:flex;align-items:center;gap:10px}
+.tc2-a{width:38px;height:38px;background:var(--grad-d);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.8rem}
+.tc2-n h4{font-size:.78rem;font-weight:600;color:var(--white)}
+.tc2-n p{font-size:.6rem;color:var(--steel)}
+
+.fq{border:1px solid rgba(255,255,255,.04);border-radius:6px;margin-bottom:8px;overflow:hidden;background:var(--glass);transition:all .3s}
+.fq.on{border-color:rgba(0,85,255,.08)}
+.fq-q{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .3s;gap:10px}
+.fq-q:hover{background:rgba(0,85,255,.01)}
+.fq-q h4{font-size:.82rem;font-weight:500;flex:1;line-height:1.4}
+.fq-t{width:26px;height:26px;min-width:26px;border-radius:4px;background:rgba(0,85,255,.04);display:flex;align-items:center;justify-content:center;color:var(--blue);transition:all .35s;font-size:.9rem}
+.fq.on .fq-t{transform:rotate(45deg);background:var(--grad-d);color:#fff}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
+.fq-a-in{padding:0 18px 16px;color:var(--steel-l);line-height:1.9;font-size:.8rem}
+
+.ft{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.03);padding:50px 18px 24px;background:rgba(2,2,8,.96)}
+.ft-g{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:36px}
+.ft-b h3{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:6px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.ft-b p{color:var(--steel);font-size:.78rem;line-height:1.8;max-width:300px}
+.ft-s{display:flex;gap:6px;margin-top:16px}
+.ft-s a{width:32px;height:32px;border:1px solid rgba(255,255,255,.03);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--steel);text-decoration:none;transition:all .3s;font-size:.72rem}
+.ft-s a:hover{border-color:var(--blue);color:var(--blue)}
+.ft-c h4{font-family:'Bebas Neue',sans-serif;font-size:.6rem;letter-spacing:4px;color:var(--blue);margin-bottom:14px}
+.ft-c a{display:block;color:var(--steel);text-decoration:none;font-size:.75rem;padding:3px 0;transition:color .3s}
+.ft-c a:hover{color:var(--blue-l)}
+.ft-bot{max-width:1140px;margin:0 auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.03);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.ft-bot p{font-size:.65rem;color:var(--steel)}
+@media(max-width:768px){.ft-g{grid-template-columns:1fr;gap:24px}.ft-bot{flex-direction:column;text-align:center}}
+
+.rv{opacity:0;transform:translateY(35px);transition:all .75s cubic-bezier(.22,.61,.36,1)}.rv.on{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.05s}.d2{transition-delay:.1s}.d3{transition-delay:.15s}.d4{transition-delay:.2s}.d5{transition-delay:.25s}.d6{transition-delay:.3s}
+
+.btt2{position:fixed;bottom:20px;right:20px;width:40px;height:40px;background:var(--grad-d);border:none;border-radius:4px;color:#fff;font-size:.9rem;cursor:pointer;z-index:999;opacity:0;visibility:hidden;transition:all .4s;display:flex;align-items:center;justify-content:center}
+.btt2.vis{opacity:1;visibility:visible}.btt2:hover{transform:translateY(-2px)}
+
+.gl{position:relative;z-index:2;height:1px;background:linear-gradient(90deg,transparent,rgba(0,85,255,.06),rgba(0,229,255,.04),rgba(0,85,255,.06),transparent);margin:0;border:none}
+
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.g6{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.tc{text-align:center}.mx{margin-left:auto;margin-right:auto}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="ld-mark">MAXMAN</div><div class="ld-line"><span></span></div><div class="ld-sub">Performance Engineered</div></div>
+
+<div class="cr" id="cO"></div><div class="cd" id="cI"></div>
+<canvas id="bg"></canvas>
+
+<nav id="nav">
+<a href="#" class="logo">MAXMAN</a>
+<div class="nm"><a href="#ar">المنتج</a><a href="#feat">Features</a><a href="#show">Showcase</a><a href="#faq">FAQ</a><a href="#ord" class="nm-cta">ORDER NOW</a></div>
+<button class="hb" id="hb" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mn" id="mn"><button class="mx" id="mc">✕</button><a href="#ar" onclick="cm()">المنتج</a><a href="#feat" onclick="cm()">Features</a><a href="#show" onclick="cm()">Showcase</a><a href="#ben" onclick="cm()">Benefits</a><a href="#ord" onclick="cm()">Order</a><a href="#faq" onclick="cm()">FAQ</a></div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+<div class="hero-wrap">
+<div class="hero-txt">
+<div class="h-over" id="xHO">MAXIMUM PERFORMANCE</div>
+<h1 class="h-big" id="xHT"><span class="gr">MAX</span>MAN</h1>
+<p class="h-p" id="xHP">Engineered for peak performance. MAXMAN delivers pharmaceutical-grade potency with a 100% natural formula. One capsule. Maximum power. Zero compromise.</p>
+<div class="h-btns" id="xHB">
+<a href="#ord" class="b1"><span>اطلب الآن</span> →</a>
+<a href="#ar" class="b2">EXPLORE</a>
+</div>
+</div>
+<div class="hero-vis">
+<div class="h-frame" id="hF">
+<div class="h-aura"></div>
+<img src="https://i.imgur.com/n6bjEEd.jpeg" alt="MAXMAN" loading="eager">
+<div class="h-orbit"></div>
+<div class="h-orbit"></div>
+</div>
+</div>
+</div>
+<div class="scroll-q"><span>SCROLL</span><div></div></div>
+</section>
+
+<hr class="gl">
+
+<!-- ARABIC -->
+<section class="sec ar-s" id="ar">
+<div class="sec-in">
+<div class="rv tc" style="direction:rtl;margin-bottom:56px"><div class="tag c" style="font-family:'Tajawal';justify-content:center">المنتج الأقوى</div><h2 class="ar-h">ماكسمان</h2><div class="sr mx" style="margin:14px auto"></div><p class="ar-p mx" style="max-width:720px">ماكسمان — المنتج الأقوى والأكثر تطوراً في عالم تعزيز الأداء للرجال. كبسولات فاخرة بتركيبة صيدلانية متقدمة من مكونات طبيعية فعّالة مختبرة سريرياً. يعمل على رفع مستويات الطاقة والقدرة البدنية والتحمل بشكل ملحوظ من أول استخدام. منتج أصلي ١٠٠٪ بأعلى معايير الجودة والسلامة العالمية. النتائج مثبتة علمياً ومضمونة.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;direction:rtl">
+<div class="ac rv d1"><div class="ac-i">💊</div><h3>تركيبة صيدلانية</h3><p>كبسولات بجودة صيدلانية عالية مع تركيز مثالي من المكونات الفعّالة لأقصى فعالية ونتائج مضمونة</p></div>
+<div class="ac rv d2"><div class="ac-i">⚡</div><h3>طاقة فورية</h3><p>يعزز مستويات الطاقة والقدرة البدنية بشكل ملحوظ وسريع مع استمرارية في الأداء تدوم لساعات</p></div>
+<div class="ac rv d3"><div class="ac-i">🏋️</div><h3>أداء خارق</h3><p>يرفع مستوى الأداء البدني والتحمل إلى أقصى حد ممكن. قوة استثنائية في كل جرعة</p></div>
+<div class="ac rv d4"><div class="ac-i">🌿</div><h3>طبيعي وآمن</h3><p>مكونات طبيعية ١٠٠٪ بدون أي مواد كيميائية ضارة أو هرمونات صناعية. آمن تماماً</p></div>
+<div class="ac rv d5"><div class="ac-i">🔬</div><h3>مختبر سريرياً</h3><p>خضع لاختبارات سريرية مكثفة في مختبرات معتمدة لإثبات الفعالية والسلامة</p></div>
+<div class="ac rv d6"><div class="ac-i">✅</div><h3>أصلي مرخّص</h3><p>منتج أصلي ١٠٠٪ حاصل على جميع الشهادات والتراخيص الصحية الدولية المطلوبة</p></div>
+</div>
+<div style="margin-top:76px;direction:rtl;text-align:center" class="rv"><div class="tag c" style="font-family:'Tajawal';justify-content:center">الفوائد</div><h2 class="ar-h" style="font-size:clamp(1.6rem,2.8vw,2.2rem)">فوائد ماكسمان</h2><div class="sr mx" style="margin:14px auto"></div></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:32px;direction:rtl">
+<div class="cd2 rv d1 tc" style="direction:rtl"><div style="font-size:2rem;margin-bottom:8px">💪</div><h3 style="font-family:'Tajawal';font-size:.98rem;font-weight:700;margin-bottom:6px">قوة مضاعفة</h3><p style="font-family:'Tajawal';color:var(--steel-l);font-size:.78rem;line-height:1.8">يضاعف القوة البدنية والتحمل</p></div>
+<div class="cd2 rv d2 tc" style="direction:rtl"><div style="font-size:2rem;margin-bottom:8px">🔥</div><h3 style="font-family:'Tajawal';font-size:.98rem;font-weight:700;margin-bottom:6px">طاقة متواصلة</h3><p style="font-family:'Tajawal';color:var(--steel-l);font-size:.78rem;line-height:1.8">طاقة لا تنفد طوال اليوم</p></div>
+<div class="cd2 rv d3 tc" style="direction:rtl"><div style="font-size:2rem;margin-bottom:8px">🎯</div><h3 style="font-family:'Tajawal';font-size:.98rem;font-weight:700;margin-bottom:6px">تركيز حاد</h3><p style="font-family:'Tajawal';color:var(--steel-l);font-size:.78rem;line-height:1.8">وضوح ذهني وتركيز فائق</p></div>
+<div class="cd2 rv d4 tc" style="direction:rtl"><div style="font-size:2rem;margin-bottom:8px">⭐</div><h3 style="font-family:'Tajawal';font-size:.98rem;font-weight:700;margin-bottom:6px">ثقة مطلقة</h3><p style="font-family:'Tajawal';color:var(--steel-l);font-size:.78rem;line-height:1.8">ثقة بالنفس لا تتزعزع</p></div>
+</div>
+</div>
+</section>
+
+<hr class="gl">
+
+<!-- ENGLISH -->
+<section class="sec" id="en" style="background:linear-gradient(180deg,var(--void) 0%,var(--void-3) 50%,var(--void) 100%)">
+<div class="sec-in">
+<div class="tc rv" style="margin-bottom:56px"><div class="tag c">THE SCIENCE</div><h2 class="sh"><span class="gr">MAX</span>MAN — Peak Performance</h2><div class="sr mx" style="margin:14px auto"></div><p class="sp mx">MAXMAN is a pharmaceutical-grade performance supplement engineered with cutting-edge science. Each capsule contains a proprietary blend of clinically validated natural compounds that work synergistically to maximize strength, stamina, and endurance. 100% natural. Zero side effects. Maximum results.</p></div>
+<div class="g3" style="margin-top:40px">
+<div class="cd2 rv d1"><h3 style="font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--blue-l)">Proprietary MAX Formula</h3><p style="color:var(--steel-l);line-height:1.85;font-size:.82rem">A precision-engineered blend of Tongkat Ali, Maca Root, L-Arginine, and Tribulus Terrestris — each standardized to maximum potency for synergistic performance enhancement.</p></div>
+<div class="cd2 rv d2"><h3 style="font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--blue-l)">Rapid Bioavailability</h3><p style="color:var(--steel-l);line-height:1.85;font-size:.82rem">Advanced absorption technology ensures active compounds reach your bloodstream within 30 minutes. Feel the surge of energy and confidence from the very first capsule.</p></div>
+<div class="cd2 rv d3"><h3 style="font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--blue-l)">Clinically Validated</h3><p style="color:var(--steel-l);line-height:1.85;font-size:.82rem">Backed by clinical studies and manufactured in GMP-certified facilities. Every batch is third-party tested for purity, potency, and safety — no exceptions.</p></div>
+</div>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec" id="feat">
+<div class="sec-in">
+<div class="tc rv" style="margin-bottom:56px"><div class="tag c">FEATURES</div><h2 class="sh">Why <span class="gr">MAXMAN</span></h2><div class="sr mx" style="margin:14px auto"></div><p class="sp mx">Every detail optimized for peak performance.</p></div>
+<div class="g6">
+<div class="cd2 rv d1"><div class="fi2">💊</div><h3 style="font-size:.95rem;font-weight:700;margin-bottom:7px">MAX Potency</h3><p style="color:var(--steel-l);font-size:.8rem;line-height:1.75">Maximum concentration active ingredients for uncompromising results.</p></div>
+<div class="cd2 rv d2"><div class="fi2">⚡</div><h3 style="font-size:.95rem;font-weight:700;margin-bottom:7px">Fast Acting</h3><p style="color:var(--steel-l);font-size:.8rem;line-height:1.75">Feel the effects within 30 minutes. No waiting, no guessing.</p></div>
+<div class="cd2 rv d3"><div class="fi2">🕐</div><h3 style="font-size:.95rem;font-weight:700;margin-bottom:7px">72h Duration</h3><p style="color:var(--steel-l);font-size:.8rem;line-height:1.75">Extended-release formula provides up to 72 hours of enhanced performance.</p></div>
+<div class="cd2 rv d4"><div class="fi2">🌿</div><h3 style="font-size:.95rem;font-weight:700;margin-bottom:7px">100% Natural</h3><p style="color:var(--steel-l);font-size:.8rem;line-height:1.75">Pure botanical extracts. No chemicals, no hormones, no fillers.</p></div>
+<div class="cd2 rv d5"><div class="fi2">🔬</div><h3 style="font-size:.95rem;font-weight:700;margin-bottom:7px">Lab Certified</h3><p style="color:var(--steel-l);font-size:.8rem;line-height:1.75">GMP-certified manufacturing with independent batch testing.</p></div>
+<div class="cd2 rv d6"><div class="fi2">📦</div><h3 style="font-size:.95rem;font-weight:700;margin-bottom:7px">Discreet Ship</h3><p style="color:var(--steel-l);font-size:.8rem;line-height:1.75">Plain packaging. Fast delivery. Complete privacy guaranteed.</p></div>
+</div>
+</div>
+</section>
+
+<hr class="gl">
+
+<!-- SHOWCASE -->
+<section class="sec sc-s" id="show">
+<div class="sec-in tc"><div class="rv"><div class="tag c">SHOWCASE</div><h2 class="sh"><span class="gr">MAX</span>IMUM Power</h2><div class="sr mx" style="margin:14px auto"></div><p class="sp mx">The pinnacle of performance science.</p></div>
+<div class="sc-w rv" id="scW"><img src="https://i.imgur.com/n6bjEEd.jpeg" alt="MAXMAN" class="sc-i" id="scI" loading="lazy"></div></div>
+</section>
+
+<!-- BENEFITS -->
+<section class="sec" id="ben" style="background:linear-gradient(180deg,var(--void) 0%,var(--void-2) 50%,var(--void) 100%)">
+<div class="sec-in">
+<div class="tc rv" style="margin-bottom:56px"><div class="tag c">RESULTS</div><h2 class="sh">Proven <span class="gr">Performance</span></h2><div class="sr mx" style="margin:14px auto"></div></div>
+<div class="g4" style="margin-bottom:64px">
+<div class="cd2 nc rv d1"><div class="nv" data-target="98">0%</div><div class="nl">Satisfaction</div></div>
+<div class="cd2 nc rv d2"><div class="nv" data-target="30">0</div><div class="nl">Min Activation</div></div>
+<div class="cd2 nc rv d3"><div class="nv" data-target="72">0h</div><div class="nl">Duration</div></div>
+<div class="cd2 nc rv d4"><div class="nv" data-target="100">0%</div><div class="nl">Natural</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(370px,1fr));gap:40px;align-items:center">
+<div class="rv">
+<h3 style="font-family:'Bebas Neue';font-size:1.5rem;letter-spacing:3px;margin-bottom:28px;color:var(--white)">WHY <span style="color:var(--blue-l)">MAXMAN</span>?</h3>
+<div class="wr"><div class="wi">✓</div><div class="wt"><h4>Clinically Proven Formula</h4><p>Backed by clinical studies with measurable, repeatable results.</p></div></div>
+<div class="wr"><div class="wi">✓</div><div class="wt"><h4>Pharmaceutical-Grade Quality</h4><p>Manufactured in GMP-certified facilities to the highest standards.</p></div></div>
+<div class="wr"><div class="wi">✓</div><div class="wt"><h4>Fast Acting, Long Lasting</h4><p>30-minute activation with effects lasting up to 72 hours.</p></div></div>
+<div class="wr"><div class="wi">✓</div><div class="wt"><h4>Zero Side Effects</h4><p>100% natural ingredients with no chemicals or synthetic hormones.</p></div></div>
+<div class="wr"><div class="wi">✓</div><div class="wt"><h4>Trusted by 50,000+ Men</h4><p>A global community of men who trust MAXMAN for peak performance.</p></div></div>
+</div>
+<div class="rv d2" style="display:flex;align-items:center;justify-content:center"><img src="https://i.imgur.com/n6bjEEd.jpeg" alt="MAXMAN" style="max-width:360px;width:100%;border-radius:16px;filter:drop-shadow(0 20px 50px var(--blue-glow));animation:float 8s ease-in-out infinite" loading="lazy"></div>
+</div>
+</div>
+</section>
+
+<hr class="gl">
+
+<!-- ORDER -->
+<section class="sec or-s" id="ord">
+<div class="sec-in">
+<div class="tc rv" style="margin-bottom:40px"><div class="tag c">ORDER</div><h2 class="sh">اطلب الآن | <span class="gr">ORDER NOW</span></h2><div class="sr mx" style="margin:14px auto"></div><p class="sp mx">Complete the form to order via WhatsApp.</p></div>
+<div class="or-w">
+<div class="cd2 rv" style="padding:40px 36px">
+<div style="display:flex;align-items:center;gap:14px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.03)">
+<img src="https://i.imgur.com/n6bjEEd.jpeg" alt="MAXMAN" style="width:60px;height:60px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.04)">
+<div><h3 style="font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:4px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">MAXMAN</h3><p style="color:var(--blue);font-size:.68rem;font-family:'Tajawal'">ماكسمان | Premium Performance</p></div>
+</div>
+<form id="oF" onsubmit="doOrd(event)">
+<div class="fg"><div class="fl"><span>Quantity</span><span class="ar">العدد</span></div><div class="qr"><button type="button" class="qb2" onclick="cQ(-1)">−</button><input type="number" id="qty" class="qi2" value="1" min="1" max="99"><button type="button" class="qb2" onclick="cQ(1)">+</button></div></div>
+<div class="fg"><div class="fl"><span>Location</span><span class="ar">الموقع</span></div><input type="text" id="loc" class="fi3" placeholder="أدخل موقع التوصيل / Delivery location" required></div>
+<div class="fg"><div class="fl"><span>Note</span><span class="ar">ملاحظة</span></div><textarea id="note" class="fi3" placeholder="ملاحظات إضافية / Additional notes"></textarea></div>
+<button type="submit" class="ob2"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.462-1.494A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.32-.726-6.006-1.957a.75.75 0 00-.598-.108l-3.2 1.07 1.072-3.202a.75.75 0 00-.109-.597A9.958 9.958 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>ORDER VIA WHATSAPP | اطلب عبر واتساب</button>
+</form>
+</div>
+</div>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="sec" id="test">
+<div class="sec-in">
+<div class="tc rv" style="margin-bottom:56px"><div class="tag c">REVIEWS</div><h2 class="sh">Trusted by <span class="gr">Thousands</span></h2><div class="sr mx" style="margin:14px auto"></div></div>
+<div class="g3">
+<div class="tc2 rv d1"><div class="tc2-s">★★★★★</div><p class="tc2-b" style="font-family:'Tajawal';direction:rtl;text-align:right">"ماكسمان غيّر حياتي! مفعوله قوي وسريع ويدوم لأيام. منتج أصلي وفعّال. أنصح فيه بقوة لكل رجل."</p><div class="tc2-w"><div class="tc2-a">ع</div><div class="tc2-n"><h4 style="font-family:'Tajawal'">عبدالله م.</h4><p>عميل موثق</p></div></div></div>
+<div class="tc2 rv d2"><div class="tc2-s">★★★★★</div><p class="tc2-b" style="font-family:'Tajawal';direction:rtl;text-align:right">"جربت منتجات كثيرة بس ماكسمان مختلف تماماً. النتيجة من أول كبسولة كانت مذهلة. جودة عالية ونتائج حقيقية."</p><div class="tc2-w"><div class="tc2-a">ح</div><div class="tc2-n"><h4 style="font-family:'Tajawal'">حسن ر.</h4><p>عميل موثق</p></div></div></div>
+<div class="tc2 rv d3"><div class="tc2-s">★★★★★</div><p class="tc2-b">"MAXMAN is the real deal. Fast acting, lasts for days, zero side effects. I've tried everything on the market — nothing comes close. This is the gold standard."</p><div class="tc2-w"><div class="tc2-a">D</div><div class="tc2-n"><h4>David K.</h4><p>Verified Buyer</p></div></div></div>
+</div>
+</div>
+</section>
+
+<hr class="gl">
+
+<!-- FAQ -->
+<section class="sec" id="faq" style="background:linear-gradient(180deg,var(--void) 0%,var(--void-2) 50%,var(--void) 100%)">
+<div class="sec-in">
+<div class="tc rv" style="margin-bottom:44px"><div class="tag c">FAQ</div><h2 class="sh">الأسئلة الشائعة | <span class="gr">FAQ</span></h2><div class="sr mx" style="margin:14px auto"></div></div>
+<div style="max-width:740px;margin:0 auto">
+<div class="fq rv d1"><div class="fq-q" onclick="tF(this)"><h4>ما هو ماكسمان؟ | What is MAXMAN?</h4><div class="fq-t">+</div></div><div class="fq-a"><div class="fq-a-in">ماكسمان هو مكمل غذائي فاخر بتركيبة صيدلانية لتعزيز الأداء والطاقة والتحمل. يحتوي على مزيج متقدم من المكونات الطبيعية المثبتة علمياً.<br><br>MAXMAN is a premium pharmaceutical-grade supplement designed to enhance performance, energy, and endurance. Contains an advanced blend of clinically proven natural ingredients.</div></div></div>
+<div class="fq rv d2"><div class="fq-q" onclick="tF(this)"><h4>كيف أستخدمه؟ | How to use?</h4><div class="fq-t">+</div></div><div class="fq-a"><div class="fq-a-in">تناول كبسولة واحدة مع كوب ماء قبل ٣٠-٦٠ دقيقة. لا تتجاوز كبسولة واحدة كل ٧٢ ساعة.<br><br>Take one capsule with water 30-60 minutes before. Do not exceed one capsule every 72 hours.</div></div></div>
+<div class="fq rv d3"><div class="fq-q" onclick="tF(this)"><h4>هل هو آمن؟ | Is it safe?</h4><div class="fq-t">+</div></div><div class="fq-a"><div class="fq-a-in">نعم، المنتج طبيعي ١٠٠٪ ومختبر سريرياً. لا يحتوي على هرمونات أو مواد كيميائية ضارة. استشر طبيبك إذا كنت تتناول أدوية.<br><br>Yes, 100% natural and clinically tested. No hormones or harmful chemicals. Consult your doctor if taking medications.</div></div></div>
+<div class="fq rv d4"><div class="fq-q" onclick="tF(this)"><h4>متى يبدأ المفعول؟ | When does it work?</h4><div class="fq-t">+</div></div><div class="fq-a"><div class="fq-a-in">يبدأ المفعول خلال ٣٠ دقيقة ويستمر حتى ٧٢ ساعة.<br><br>Effects begin within 30 minutes and last up to 72 hours.</div></div></div>
+<div class="fq rv d5"><div class="fq-q" onclick="tF(this)"><h4>كيف أطلب؟ | How to order?</h4><div class="fq-t">+</div></div><div class="fq-a"><div class="fq-a-in">أكمل نموذج الطلب واضغط "اطلب الآن". سيتم فتح واتساب تلقائياً. التوصيل سري ومغلف.<br><br>Fill the order form and click "Order Now." WhatsApp opens automatically. Delivery is discreet.</div></div></div>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="ft">
+<div class="ft-g">
+<div class="ft-b"><h3>MAXMAN</h3><p>Premium performance supplement. Pharmaceutical-grade. 100% natural. Maximum results.</p><div class="ft-s"><a href="#">📷</a><a href="#">📘</a><a href="#">🎵</a><a href="#">💬</a></div></div>
+<div class="ft-c"><h4>LINKS</h4><a href="#ar">المنتج</a><a href="#feat">Features</a><a href="#show">Showcase</a><a href="#ben">Benefits</a><a href="#ord">Order</a></div>
+<div class="ft-c"><h4>SUPPORT</h4><a href="#faq">FAQ</a><a href="#ord">Contact</a><a href="#">Shipping</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+</div>
+<div class="ft-bot"><p>&copy; 2025 MAXMAN. All rights reserved.</p><p style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:'Bebas Neue';font-size:.6rem;letter-spacing:5px">MAXIMUM PERFORMANCE</p></div>
+</footer>
+
+<button class="btt2" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('done');hG()},2800)});
+
+const cO=document.getElementById('cO'),cI=document.getElementById('cI');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cI.style.left=mx-2+'px';cI.style.top=my-2+'px'});
+(function aC(){cx+=(mx-cx)*.07;cy+=(my-cy)*.07;cO.style.left=cx-16+'px';cO.style.top=cy-16+'px';requestAnimationFrame(aC)})();
+document.querySelectorAll('a,button,.cd2,.ac,.tc2,.fq-q').forEach(el=>{el.addEventListener('mouseenter',()=>{cO.style.transform='scale(1.5)';cO.style.borderColor='var(--neon)'});el.addEventListener('mouseleave',()=>{cO.style.transform='scale(1)';cO.style.borderColor='rgba(0,85,255,.4)'})});
+
+(function(){
+const cv=document.getElementById('bg'),r=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+r.setSize(innerWidth,innerHeight);r.setPixelRatio(Math.min(devicePixelRatio,2));
+const s=new THREE.Scene(),c=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,1000);c.position.z=45;
+const pg=new THREE.BufferGeometry(),ct=1200;
+const p=new Float32Array(ct*3),co=new Float32Array(ct*3);
+for(let i=0;i<ct;i++){const i3=i*3;
+if(i<100){const t=i/100;p[i3]=(t-.5)*120;p[i3+1]=Math.sin(t*Math.PI*8)*15;p[i3+2]=Math.cos(t*Math.PI*8)*15;co[i3]=0;co[i3+1]=.33+t*.5;co[i3+2]=1}
+else{p[i3]=(Math.random()-.5)*140;p[i3+1]=(Math.random()-.5)*140;p[i3+2]=(Math.random()-.5)*140;const t=Math.random();if(t<.4){co[i3]=0;co[i3+1]=.33;co[i3+2]=1}else if(t<.7){co[i3]=0;co[i3+1]=.9;co[i3+2]=1}else{co[i3]=.2;co[i3+1]=.5;co[i3+2]=1}}}
+pg.setAttribute('position',new THREE.BufferAttribute(p,3));pg.setAttribute('color',new THREE.BufferAttribute(co,3));
+s.add(new THREE.Points(pg,new THREE.PointsMaterial({size:.04,vertexColors:true,transparent:true,opacity:.28,blending:THREE.AdditiveBlending})));
+const gs=[new THREE.IcosahedronGeometry(2,0),new THREE.OctahedronGeometry(1.5,0),new THREE.TorusGeometry(1.2,.1,16,48),new THREE.TetrahedronGeometry(1.5,0)];
+const fs=[];for(let i=0;i<10;i++){const m=new THREE.Mesh(gs[i%gs.length],new THREE.MeshPhongMaterial({color:[0x0055FF,0x00E5FF,0x3380FF][i%3],transparent:true,opacity:.014,wireframe:true}));m.position.set((Math.random()-.5)*80,(Math.random()-.5)*80,(Math.random()-.5)*60-15);m.userData={r:{x:Math.random()*.003,y:Math.random()*.004},f:Math.random()*.1+.03,o:Math.random()*6.28};s.add(m);fs.push(m)}
+s.add(new THREE.AmbientLight(0xffffff,.05));
+const l1=new THREE.PointLight(0x0055FF,.5,90);l1.position.set(20,20,20);s.add(l1);
+const l2=new THREE.PointLight(0x00E5FF,.2,80);l2.position.set(-20,-15,20);s.add(l2);
+let tmx=0,tmy=0;document.addEventListener('mousemove',e=>{tmx=(e.clientX/innerWidth-.5)*2;tmy=(e.clientY/innerHeight-.5)*2});
+let t=0;const pts=s.children[0];
+(function a(){requestAnimationFrame(a);t+=.003;pts.rotation.y+=.00008;c.position.x+=(tmx*3.5-c.position.x)*.008;c.position.y+=(-tmy*3.5-c.position.y)*.008;c.lookAt(s.position);l1.position.x=Math.sin(t*.3)*24;l1.position.y=Math.cos(t*.2)*24;fs.forEach(o=>{o.rotation.x+=o.userData.r.x;o.rotation.y+=o.userData.r.y;o.position.y+=Math.sin(t*o.userData.f+o.userData.o)*.0015});r.render(s,c)})();
+addEventListener('resize',()=>{c.aspect=innerWidth/innerHeight;c.updateProjectionMatrix();r.setSize(innerWidth,innerHeight)});
+})();
+
+function hG(){gsap.from('#xHO',{opacity:0,x:-30,duration:.7,delay:.05});gsap.from('#xHT',{opacity:0,y:40,duration:1,delay:.15,ease:'power3.out'});gsap.from('#xHP',{opacity:0,y:25,duration:.7,delay:.3});gsap.from('#xHB',{opacity:0,y:25,duration:.7,delay:.45});gsap.from('#hF',{opacity:0,scale:.7,x:40,duration:1.3,delay:.1,ease:'back.out(1.4)'});}
+
+const hF=document.getElementById('hF'),hS=document.getElementById('hero');
+hS.addEventListener('mousemove',e=>{const r=hS.getBoundingClientRect();const x=((e.clientX-r.left)/r.width-.5)*22;const y=((e.clientY-r.top)/r.height-.5)*22;hF.style.transform=`perspective(1200px) rotateY(${x*.15}deg) rotateX(${-y*.15}deg)`});
+hS.addEventListener('mouseleave',()=>{hF.style.transform='perspective(1200px) rotateY(0) rotateX(0)'});
+
+const scW=document.getElementById('scW');
+if(scW){scW.addEventListener('mousemove',e=>{const r=scW.getBoundingClientRect();const x=((e.clientX-r.left)/r.width-.5)*18;const y=((e.clientY-r.top)/r.height-.5)*18;const i=document.getElementById('scI');if(i)i.style.transform=`perspective(1200px) rotateY(${x*.2}deg) rotateX(${-y*.2}deg) translateY(${Math.sin(Date.now()*.001)*5}px)`});scW.addEventListener('mouseleave',()=>{const i=document.getElementById('scI');if(i)i.style.transform=''})}
+
+const nv=document.getElementById('nav'),bt=document.getElementById('btt');
+addEventListener('scroll',()=>{nv.classList.toggle('on',scrollY>35);bt.classList.toggle('vis',scrollY>350)});
+document.getElementById('hb').addEventListener('click',()=>document.getElementById('mn').classList.add('open'));
+document.getElementById('mc').addEventListener('click',cm);
+function cm(){document.getElementById('mn').classList.remove('open')}
+
+function doRv(){document.querySelectorAll('.rv').forEach(el=>{if(el.getBoundingClientRect().top<innerHeight-45)el.classList.add('on')})}
+addEventListener('scroll',doRv);addEventListener('load',()=>setTimeout(doRv,3000));
+
+function doCnt(){document.querySelectorAll('.nv').forEach(c=>{if(c.dataset.done)return;if(c.getBoundingClientRect().top<innerHeight-20){c.dataset.done='1';const tgt=+c.dataset.target;const txt=c.textContent;const sfx=txt.replace(/[0-9]/g,'');let cur=0;const inc=tgt/45;const tm=setInterval(()=>{cur+=inc;if(cur>=tgt){cur=tgt;clearInterval(tm)}c.textContent=Math.floor(cur).toLocaleString()+sfx},30)}})}
+addEventListener('scroll',doCnt);
+
+function tF(el){const it=el.parentElement;const a=it.querySelector('.fq-a');const on=it.classList.contains('on');document.querySelectorAll('.fq').forEach(f=>{f.classList.remove('on');f.querySelector('.fq-a').style.maxHeight=null});if(!on){it.classList.add('on');a.style.maxHeight=a.scrollHeight+'px'}}
+
+function cQ(d){const i=document.getElementById('qty');let v=parseInt(i.value)||1;v+=d;if(v<1)v=1;if(v>99)v=99;i.value=v}
+
+function doOrd(e){
+e.preventDefault();
+const q=document.getElementById('qty').value||'1';const l=document.getElementById('loc').value||'';const n=document.getElementById('note').value||'';
+if(!l.trim()){const el=document.getElementById('loc');el.focus();el.style.borderColor='var(--blue)';el.style.boxShadow='0 0 16px var(--blue-glow)';setTimeout(()=>{el.style.borderColor='';el.style.boxShadow=''},2500);return}
+const pn='MAXMAN';const pi='https://i.imgur.com/n6bjEEd.jpeg';
+const msg=`مرحباً،
+
+أرغب بطلب هذا المنتج:
+
+اسم المنتج:
+${pn}
+
+رابط الصورة:
+${pi}
+
+العدد:
+${q}
+
+الموقع:
+${l}
+
+الملاحظة:
+${n||'لا يوجد'}
+
+---
+
+Hello,
+
+I would like to order this product.
+
+Product:
+${pn}
+
+Image:
+${pi}
+
+Quantity:
+${q}
+
+Location:
+${l}
+
+Note:
+${n||'N/A'}`;
+window.open('https://wa.me/639557292395?text='+encodeURIComponent(msg),'_blank');
+}
+
+gsap.registerPlugin(ScrollTrigger);
+gsap.fromTo('#scI',{scale:.8,opacity:.3},{scale:1,opacity:1,scrollTrigger:{trigger:'#show',start:'top 80%',end:'center center',scrub:1}});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+</script>
+</body>
+</html>
